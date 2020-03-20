@@ -24,10 +24,11 @@ class CogDisplayView extends Ui.DataField {
 	
 						
 	// Initialize variables
-	var wheelRotSpeed = 0.0;  //wheel speed in rpm					
-	var measuredRatio = 0.0;  //Ratio computed from cadence and speed					
+	var wheelRotSpeed = 0.0;  // wheel speed in rpm					
+	var measuredRatio = 0.0;  // Ratio computed from cadence and speed	
+	var developmentM  = 0.0;  // meters of development				
 	var ringRatios = new [nChainRings];
-	var cogNumber = [0, 0, 0];
+
 
     hidden var printCog;
 
@@ -38,11 +39,13 @@ class CogDisplayView extends Ui.DataField {
 		}
 	    for (var i = 0; i<nChainRings; i++){
 	    	for (var j = 0; j<11; j++){
-				self.ringRatios[i][j] = 1.0*self.cogs[j]/self.chainRings[i];
+				self.ringRatios[i][j] = 1.0*self.chainRings[i]/self.cogs[j];
 	    	}
     	}
-    	System.println(chainRings);
-    	System.println(self.ringRatios);
+    	System.println(cogs);
+    	for (var i = 0; i<nChainRings; i++){
+    		System.println(chainRings[i] + ": "+self.ringRatios[i]);
+    	}
         DataField.initialize();
         printCog = "-";
     }
@@ -86,41 +89,28 @@ class CogDisplayView extends Ui.DataField {
     // Note that compute() and onUpdate() are asynchronous, and there is no
     // guarantee that compute() will be called before onUpdate().
     function compute(info) {
-if (info.currentCadence != null && info.currentSpeed != null 
-		&& info.currentSpeed != 0.0 && info.currentCadence != 0  && info.currentCadence < 500){
-			wheelRotSpeed = 60.0*info.currentSpeed/wheelCircumference;
-			measuredRatio = wheelRotSpeed/info.currentCadence;
-			// System.println("speed= " +3.6*info.currentSpeed + " cadence= " + info.currentCadence);
-			// System.println("wheel rot= " + wheelRotSpeed + " ratio=" + measuredRatio);
-		
-			// Find the best correlation
-			var correlationCoef = [100.0, 100.0, 100.0];
-			for (var i = 0; i<nChainRings; i++){
-		    	for (var j = 0; j<11; j++){
-		    	var currentCoef = measuredRatio*ringRatios[i][j] - 1.0;
-		    	// If negative, make it positive (since there is no absolute value function)
-		    	if (currentCoef < 0.0){
-		    		currentCoef = -currentCoef;
-		    	}
-					if (currentCoef < correlationCoef[i]){
-						correlationCoef[i] = currentCoef;
-						cogNumber[i] = cogs[j];
-					}
-		    	}
-	    	}
-	    	// System.println("cogs= " + cogNumber + "  Corr. coef. = " + correlationCoef);
-		} else {
-			// System.println("STOP speed= " +info.currentSpeed + " cadence= " + info.currentCadence);
-		}
-		if (nChainRings == 1){
-			printCog = cogNumber[0].toString();
-		} else if (nChainRings == 2){
-			printCog = cogNumber[0].toString() + "|" + cogNumber[1].toString();
-		} else {
-			printCog = cogNumber[0].toString() + "|" + 
-			cogNumber[1].toString() + "|" + cogNumber[2].toString();
-		}
-    }
+        System.println("compute()");
+    	System.println("  cad="+info.currentCadence + " rpm");
+    	System.println("  spd="+info.currentSpeed * 2.2 + " mph");
+    	
+		if (info.currentCadence != null && info.currentSpeed != null 
+			&& info.currentSpeed != 0.0 && info.currentCadence != 0  && info.currentCadence < 500)
+			{
+				wheelRotSpeed = info.currentSpeed / wheelCircumference;
+				developmentM  = info.currentSpeed / (info.currentCadence/60.0);
+				measuredRatio = wheelCircumference / developmentM;
+				
+				System.println("  whlspd="+wheelRotSpeed + " r/s");
+    			System.println("  ratio ="+measuredRatio);
+    			System.println("  devel ="+developmentM + " m");
+    			
+				printCog = measuredRatio.format("%3.1f") + " | " + developmentM.format("%3.1f") + "m";
+
+			} else {
+				printCog = "-";
+			}
+
+	    }
 
     // Display the value you computed here. This will be called
     // once a second when the data field is visible.
@@ -138,7 +128,9 @@ if (info.currentCadence != null && info.currentSpeed != null
             value.setColor(Gfx.COLOR_BLACK);
             labelView.setColor(Gfx.COLOR_BLACK);
         }
+        
         value.setText(printCog);
+        
 		value.setFont(Gfx.FONT_LARGE);
         // Call parent's onUpdate(dc) to redraw the layout
         View.onUpdate(dc);

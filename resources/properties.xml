@@ -1,21 +1,21 @@
 <resources>
 	<properties>
 		<property id="chainRingCount" type="number">2</property>
-		<property id="chainRing1" type="number">34</property>
-		<property id="chainRing2" type="number">50</property>
+		<property id="chainRing1" type="number">30</property>
+		<property id="chainRing2" type="number">46</property>
 		<property id="chainRing3" type="number">0</property>
-		<property id="cog1" type="number">32</property>
-		<property id="cog2" type="number">28</property>
-		<property id="cog3" type="number">25</property>
-		<property id="cog4" type="number">22</property>
-		<property id="cog5" type="number">20</property>
-		<property id="cog6" type="number">18</property>
-		<property id="cog7" type="number">16</property>
+		<property id="cog1" type="number">30</property>
+		<property id="cog2" type="number">27</property>
+		<property id="cog3" type="number">24</property>
+		<property id="cog4" type="number">21</property>
+		<property id="cog5" type="number">19</property>
+		<property id="cog6" type="number">17</property>
+		<property id="cog7" type="number">15</property>
 		<property id="cog8" type="number">14</property>
 		<property id="cog9" type="number">13</property>
 		<property id="cog10" type="number">12</property>
 		<property id="cog11" type="number">11</property>
-		<property id="wheelCircumference" type="number">2086</property>
+		<property id="wheelCircumference" type="number">2155</property>
     </properties>
 
 	<strings>
