@@ -1,4 +1,12 @@
+
 <strings>
-    <string id="AppName">Gear Ratio</string>
+	<string id="AppName">Gear Ratio</string>
 	<string id="cogLabel">Ratio | Dev</string>
+	<string id="ratio_graph_label">Gear Ratio</string>
+	<string id="ratio_label">Gear Ratio</string>
+	<string id="ratio_units">1:N</string>
+	<string id="development_graph_label">Meters of Development</string>
+	<string id="development_label">Development</string>
+	<string id="development_units">meters</string>
 </strings>
+

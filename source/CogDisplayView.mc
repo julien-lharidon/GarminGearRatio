@@ -30,6 +30,9 @@ class CogDisplayView extends Ui.DataField {
 	var ringRatios = new [nChainRings];
 
 
+	hidden var ratioField = null;
+	hidden var developmentField = null;
+	
     hidden var printCog;
 
     function initialize() {
@@ -48,6 +51,21 @@ class CogDisplayView extends Ui.DataField {
     	}
         DataField.initialize();
         printCog = "-";
+        
+        ratioField = createField("gearRatio",
+           0, 
+           FitContributor.DATA_TYPE_FLOAT,
+           { :units=>"one" });
+           
+                   
+        developmentField = createField("metersOfDevelopment",
+           1, 
+           FitContributor.DATA_TYPE_FLOAT, 
+           { :units=>"m" });
+           
+        ratioField.setData(0.0);
+        developmentField.setData(0.0);
+
     }
 
     // Set your layout here. Anytime the size of obscurity of
@@ -106,6 +124,9 @@ class CogDisplayView extends Ui.DataField {
     			
 				printCog = measuredRatio.format("%3.1f") + " | " + developmentM.format("%3.1f") + "m";
 
+				ratioField.setData(measuredRatio);
+				developmentField.setData(developmentM);
+				
 			} else {
 				printCog = "-";
 			}
