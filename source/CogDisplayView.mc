@@ -21,19 +21,18 @@ class CogDisplayView extends Ui.DataField {
 						Application.getApp().getProperty("cog10"), 
 						Application.getApp().getProperty("cog11")];
 	
-	
+	var ringRatios = new [nChainRings];	
+						
 						
 	// Initialize variables
 	var wheelRotSpeed = 0.0;  // wheel speed in rpm					
 	var measuredRatio = 0.0;  // Ratio computed from cadence and speed	
 	var developmentM  = 0.0;  // meters of development				
-	var ringRatios = new [nChainRings];
-
-
+	var valid = false;
+	
 	hidden var ratioField = null;
 	hidden var developmentField = null;
 	
-    hidden var printCog;
 
     function initialize() {
     	// Create an array of [nChainRings, 11]
@@ -42,15 +41,16 @@ class CogDisplayView extends Ui.DataField {
 		}
 	    for (var i = 0; i<nChainRings; i++){
 	    	for (var j = 0; j<11; j++){
-				self.ringRatios[i][j] = 1.0*self.chainRings[i]/self.cogs[j];
+				ringRatios[i][j] = 1.0*chainRings[i]/cogs[j];
 	    	}
     	}
+    	
     	System.println(cogs);
     	for (var i = 0; i<nChainRings; i++){
-    		System.println(chainRings[i] + ": "+self.ringRatios[i]);
+    		System.println(chainRings[i] + ": "+ringRatios[i]);
     	}
+    	
         DataField.initialize();
-        printCog = "-";
         
         ratioField = createField("gearRatio",
            0, 
@@ -71,35 +71,36 @@ class CogDisplayView extends Ui.DataField {
     // Set your layout here. Anytime the size of obscurity of
     // the draw context is changed this will be called.
     function onLayout(dc) {
-        var obscurityFlags = DataField.getObscurityFlags();
+//        var obscurityFlags = DataField.getObscurityFlags();
+//
+//        // Top left quadrant so we'll use the top left layout
+//        if (obscurityFlags == (OBSCURE_TOP | OBSCURE_LEFT)) {
+//            View.setLayout(Rez.Layouts.TopLeftLayout(dc));
+//
+//        // Top right quadrant so we'll use the top right layout
+//        } else if (obscurityFlags == (OBSCURE_TOP | OBSCURE_RIGHT)) {
+//            View.setLayout(Rez.Layouts.TopRightLayout(dc));
+//
+//        // Bottom left quadrant so we'll use the bottom left layout
+//        } else if (obscurityFlags == (OBSCURE_BOTTOM | OBSCURE_LEFT)) {
+//            View.setLayout(Rez.Layouts.BottomLeftLayout(dc));
+//
+//        // Bottom right quadrant so we'll use the bottom right layout
+//        } else if (obscurityFlags == (OBSCURE_BOTTOM | OBSCURE_RIGHT)) {
+//            View.setLayout(Rez.Layouts.BottomRightLayout(dc));
+//
+//        // Use the generic, centered layout
+//        } else {
+//            View.setLayout(Rez.Layouts.MainLayout(dc));
+//            var labelView = View.findDrawableById("label");
+//            labelView.locY = labelView.locY - 16;
+//            var valueView = View.findDrawableById("value");
+//            valueView.locY = valueView.locY + 7;
+//        }
+//
+//        View.findDrawableById("label").setText(Rez.Strings.cogLabel);
+//        return true;
 
-        // Top left quadrant so we'll use the top left layout
-        if (obscurityFlags == (OBSCURE_TOP | OBSCURE_LEFT)) {
-            View.setLayout(Rez.Layouts.TopLeftLayout(dc));
-
-        // Top right quadrant so we'll use the top right layout
-        } else if (obscurityFlags == (OBSCURE_TOP | OBSCURE_RIGHT)) {
-            View.setLayout(Rez.Layouts.TopRightLayout(dc));
-
-        // Bottom left quadrant so we'll use the bottom left layout
-        } else if (obscurityFlags == (OBSCURE_BOTTOM | OBSCURE_LEFT)) {
-            View.setLayout(Rez.Layouts.BottomLeftLayout(dc));
-
-        // Bottom right quadrant so we'll use the bottom right layout
-        } else if (obscurityFlags == (OBSCURE_BOTTOM | OBSCURE_RIGHT)) {
-            View.setLayout(Rez.Layouts.BottomRightLayout(dc));
-
-        // Use the generic, centered layout
-        } else {
-            View.setLayout(Rez.Layouts.MainLayout(dc));
-            var labelView = View.findDrawableById("label");
-            labelView.locY = labelView.locY - 16;
-            var valueView = View.findDrawableById("value");
-            valueView.locY = valueView.locY + 7;
-        }
-
-        View.findDrawableById("label").setText(Rez.Strings.cogLabel);
-        return true;
     }
 
     // The given info object contains all the current workout information.
@@ -115,20 +116,20 @@ class CogDisplayView extends Ui.DataField {
 			&& info.currentSpeed != 0.0 && info.currentCadence != 0  && info.currentCadence < 500)
 			{
 				wheelRotSpeed = info.currentSpeed / wheelCircumference;
-				developmentM  = info.currentSpeed / (info.currentCadence/60.0);
-				measuredRatio = wheelCircumference / developmentM;
+				developmentM  = info.currentSpeed / (info.currentCadence/60.0/2);
+				measuredRatio =  developmentM / wheelCircumference;
 				
 				System.println("  whlspd="+wheelRotSpeed + " r/s");
     			System.println("  ratio ="+measuredRatio);
     			System.println("  devel ="+developmentM + " m");
     			
-				printCog = measuredRatio.format("%3.1f") + " | " + developmentM.format("%3.1f") + "m";
 
 				ratioField.setData(measuredRatio);
 				developmentField.setData(developmentM);
+				valid = true;
 				
 			} else {
-				printCog = "-";
+				valid = false;
 			}
 
 	    }
@@ -136,46 +137,84 @@ class CogDisplayView extends Ui.DataField {
     // Display the value you computed here. This will be called
     // once a second when the data field is visible.
     function onUpdate(dc) {
-        // Set the background color
-        View.findDrawableById("Background").setColor(getBackgroundColor());
 
-        // Set the foreground color and value
-        var labelView = View.findDrawableById("label");
-        var value = View.findDrawableById("value");
-        if (getBackgroundColor() == Gfx.COLOR_BLACK) {
-            value.setColor(Gfx.COLOR_WHITE);
-            labelView.setColor(Gfx.COLOR_WHITE);
-        } else {
-            value.setColor(Gfx.COLOR_BLACK);
-            labelView.setColor(Gfx.COLOR_BLACK);
+    	
+        var bgColor = getBackgroundColor();
+        var fgColor = Graphics.COLOR_WHITE;
+
+        if (bgColor == Graphics.COLOR_WHITE) {
+            fgColor = Graphics.COLOR_BLACK;
         }
+
+        dc.setColor(fgColor, bgColor);
+        dc.clear();
+        dc.setColor(fgColor, Graphics.COLOR_TRANSPARENT);
         
-        value.setText(printCog);
-        
-		value.setFont(Gfx.FONT_LARGE);
-        // Call parent's onUpdate(dc) to redraw the layout
-        View.onUpdate(dc);
+        var padding = 15;
+		var x1 = padding;
+		var w = dc.getWidth()-padding*2;
+		var h  = 12;
+		var small = ringRatios[0][0];
+		var large = ringRatios[nChainRings-1][10];
+		var range = large-small;
+		
+		    	
+    	dc.setColor(Gfx.COLOR_RED, Graphics.COLOR_TRANSPARENT);
+		var x = (measuredRatio - small)/range * w + x1;
+		if ( x<padding )  { x = padding;}
+		if ( x>padding+w-1 ){ x = padding+w-1; }
+		dc.setPenWidth(3);
+		dc.drawLine(x, padding, x, padding+h);
+		dc.setPenWidth(1);
+		dc.setColor(fgColor, Graphics.COLOR_TRANSPARENT);
+		
+		
+//		dc.drawRectangle(x1, 10, w, h);
+		dc.drawLine(x1, padding, x1+w, padding);
+		dc.drawLine(x1, padding+h, x1+w, padding+h);
+		for (var i = 0; i<nChainRings; i++){
+	    	for (var j = 0; j<11; j++){
+	    		var r = ringRatios[i][j];
+	    		var x = (r - small)/range * w + x1;
+	    		if ( x<padding )  { x = padding; }
+	    		if ( x>padding+w-1 ){ x = padding+w-1; }
+	    		dc.drawLine(x, padding+i*(h/nChainRings), x, padding+(i+1)*(h/nChainRings));
+	    	}
+    	}
+
+		dc.drawText(dc.getWidth()/2d, dc.getHeight()/2, 
+		   Graphics.FONT_MEDIUM, 
+		   measuredRatio.format("%3.1f"), 
+		   Graphics.TEXT_JUSTIFY_CENTER);
+
+    	
+//        // Set the background color
+//        View.findDrawableById("Background").setColor(getBackgroundColor());
+//
+//        // Set the foreground color and value
+//        var labelView = View.findDrawableById("label");
+//        var value = View.findDrawableById("value");
+//        
+//        if (getBackgroundColor() == Gfx.COLOR_BLACK) {
+//            value.setColor(Gfx.COLOR_WHITE);
+//            labelView.setColor(Gfx.COLOR_WHITE);
+//        } else {
+//            value.setColor(Gfx.COLOR_BLACK);
+//            labelView.setColor(Gfx.COLOR_BLACK);
+//        }
+//        
+//        if(!valid){
+//        	value.setColor(Gfx.COLOR_RED);
+//        }
+//        
+//        value.setText(measuredRatio.format("%3.1f"));
+////        value.setText(developmentM.format("%3.1f") + "m");
+
+
+		
+		
+//        // Call parent's onUpdate(dc) to redraw the layout
+//        View.onUpdate(dc);
     }
 
 }
-
-/*
-	
-	
-    function initialize() {
-    	
-        SimpleDataField.initialize();
-        // Load up the displayed label (based on user language)
-        label = Ui.loadResource( Rez.Strings.cogLabel );
-        
-    }
-
-    // The given info object contains all the current workout
-    // information. Calculate a value and return it in this method.
-    // Note that compute() and onUpdate() are asynchronous, and there is no
-    // guarantee that compute() will be called before onUpdate().
-    function compute(info) {
-		
-    }
-
-}  */
