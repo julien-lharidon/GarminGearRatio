@@ -45,10 +45,10 @@ class CogDisplayView extends Ui.DataField {
 	    	}
     	}
     	
-    	System.println(cogs);
-    	for (var i = 0; i<nChainRings; i++){
-    		System.println(chainRings[i] + ": "+ringRatios[i]);
-    	}
+//    	System.println(cogs);
+//    	for (var i = 0; i<nChainRings; i++){
+//    		System.println(chainRings[i] + ": "+ringRatios[i]);
+//    	}
     	
         DataField.initialize();
         
@@ -71,35 +71,6 @@ class CogDisplayView extends Ui.DataField {
     // Set your layout here. Anytime the size of obscurity of
     // the draw context is changed this will be called.
     function onLayout(dc) {
-//        var obscurityFlags = DataField.getObscurityFlags();
-//
-//        // Top left quadrant so we'll use the top left layout
-//        if (obscurityFlags == (OBSCURE_TOP | OBSCURE_LEFT)) {
-//            View.setLayout(Rez.Layouts.TopLeftLayout(dc));
-//
-//        // Top right quadrant so we'll use the top right layout
-//        } else if (obscurityFlags == (OBSCURE_TOP | OBSCURE_RIGHT)) {
-//            View.setLayout(Rez.Layouts.TopRightLayout(dc));
-//
-//        // Bottom left quadrant so we'll use the bottom left layout
-//        } else if (obscurityFlags == (OBSCURE_BOTTOM | OBSCURE_LEFT)) {
-//            View.setLayout(Rez.Layouts.BottomLeftLayout(dc));
-//
-//        // Bottom right quadrant so we'll use the bottom right layout
-//        } else if (obscurityFlags == (OBSCURE_BOTTOM | OBSCURE_RIGHT)) {
-//            View.setLayout(Rez.Layouts.BottomRightLayout(dc));
-//
-//        // Use the generic, centered layout
-//        } else {
-//            View.setLayout(Rez.Layouts.MainLayout(dc));
-//            var labelView = View.findDrawableById("label");
-//            labelView.locY = labelView.locY - 16;
-//            var valueView = View.findDrawableById("value");
-//            valueView.locY = valueView.locY + 7;
-//        }
-//
-//        View.findDrawableById("label").setText(Rez.Strings.cogLabel);
-//        return true;
 
     }
 
@@ -108,20 +79,20 @@ class CogDisplayView extends Ui.DataField {
     // Note that compute() and onUpdate() are asynchronous, and there is no
     // guarantee that compute() will be called before onUpdate().
     function compute(info) {
-        System.println("compute()");
-    	System.println("  cad="+info.currentCadence + " rpm");
-    	System.println("  spd="+info.currentSpeed * 2.2 + " mph");
+//        System.println("compute()");
+//    	System.println("  cad="+info.currentCadence + " rpm");
+//    	System.println("  spd="+info.currentSpeed * 2.2 + " mph");
     	
 		if (info.currentCadence != null && info.currentSpeed != null 
 			&& info.currentSpeed != 0.0 && info.currentCadence != 0  && info.currentCadence < 500)
 			{
 				wheelRotSpeed = info.currentSpeed / wheelCircumference;
-				developmentM  = info.currentSpeed / (info.currentCadence/60.0/2);
+				developmentM  = info.currentSpeed / (info.currentCadence/60.0);
 				measuredRatio =  developmentM / wheelCircumference;
-				
-				System.println("  whlspd="+wheelRotSpeed + " r/s");
-    			System.println("  ratio ="+measuredRatio);
-    			System.println("  devel ="+developmentM + " m");
+//				
+//				System.println("  whlspd="+wheelRotSpeed + " r/s");
+//    			System.println("  ratio ="+measuredRatio);
+//    			System.println("  devel ="+developmentM + " m");
     			
 
 				ratioField.setData(measuredRatio);
@@ -169,7 +140,6 @@ class CogDisplayView extends Ui.DataField {
 		dc.setColor(fgColor, Graphics.COLOR_TRANSPARENT);
 		
 		
-//		dc.drawRectangle(x1, 10, w, h);
 		dc.drawLine(x1, padding, x1+w, padding);
 		dc.drawLine(x1, padding+h, x1+w, padding+h);
 		for (var i = 0; i<nChainRings; i++){
@@ -182,39 +152,14 @@ class CogDisplayView extends Ui.DataField {
 	    	}
     	}
 
-		dc.drawText(dc.getWidth()/2d, dc.getHeight()/2, 
-		   Graphics.FONT_MEDIUM, 
-		   measuredRatio.format("%3.1f"), 
-		   Graphics.TEXT_JUSTIFY_CENTER);
-
-    	
-//        // Set the background color
-//        View.findDrawableById("Background").setColor(getBackgroundColor());
-//
-//        // Set the foreground color and value
-//        var labelView = View.findDrawableById("label");
-//        var value = View.findDrawableById("value");
-//        
-//        if (getBackgroundColor() == Gfx.COLOR_BLACK) {
-//            value.setColor(Gfx.COLOR_WHITE);
-//            labelView.setColor(Gfx.COLOR_WHITE);
-//        } else {
-//            value.setColor(Gfx.COLOR_BLACK);
-//            labelView.setColor(Gfx.COLOR_BLACK);
-//        }
-//        
-//        if(!valid){
-//        	value.setColor(Gfx.COLOR_RED);
-//        }
-//        
-//        value.setText(measuredRatio.format("%3.1f"));
-////        value.setText(developmentM.format("%3.1f") + "m");
+		if(valid){
+			dc.drawText(dc.getWidth()/2d, dc.getHeight()/2, 
+			   Graphics.FONT_MEDIUM, 
+			   measuredRatio.format("%3.1f"), 
+			   Graphics.TEXT_JUSTIFY_CENTER);
+		}
 
 
-		
-		
-//        // Call parent's onUpdate(dc) to redraw the layout
-//        View.onUpdate(dc);
     }
 
 }

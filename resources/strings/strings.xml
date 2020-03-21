@@ -1,7 +1,7 @@
 
 <strings>
 	<string id="AppName">Gear Ratio</string>
-	<string id="cogLabel">Ratio | Dev</string>
+	<string id="cogLabel">Gear Ratio</string>
 	<string id="ratio_graph_label">Gear Ratio</string>
 	<string id="ratio_label">Gear Ratio</string>
 	<string id="ratio_units">1:N</string>
