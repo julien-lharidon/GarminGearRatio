@@ -124,12 +124,24 @@ class CogDisplayView extends Ui.DataField {
         var padding = 15;
 		var x1 = padding;
 		var w = dc.getWidth()-padding*2;
-		var h  = 12;
+		var h  = 16;
 		var small = ringRatios[0][0];
 		var large = ringRatios[nChainRings-1][10];
 		var range = large-small;
 		
-		    	
+		// Grey background for each chainring
+		for (var i = 0; i<nChainRings; i++){
+    		var xl = (ringRatios[i][0] - small)/range * w + x1;
+    		var xr = (ringRatios[i][10] - small)/range * w + x1;
+    		var yt = padding+i*(h/nChainRings);
+    		var yb = padding+(i+1)*(h/nChainRings);
+    		
+			dc.setColor(Graphics.COLOR_LT_GRAY, Graphics.COLOR_TRANSPARENT);
+			dc.fillRectangle( xl, yt, xr-xl, yb-yt);
+    	}
+    	
+    	
+		// Red cursor for current ratio    	
     	dc.setColor(Gfx.COLOR_RED, Graphics.COLOR_TRANSPARENT);
 		var x = (measuredRatio - small)/range * w + x1;
 		if ( x<padding )  { x = padding;}
@@ -137,11 +149,9 @@ class CogDisplayView extends Ui.DataField {
 		dc.setPenWidth(3);
 		dc.drawLine(x, padding, x, padding+h);
 		dc.setPenWidth(1);
+
+		// Black ticks for each gear combo
 		dc.setColor(fgColor, Graphics.COLOR_TRANSPARENT);
-		
-		
-		dc.drawLine(x1, padding, x1+w, padding);
-		dc.drawLine(x1, padding+h, x1+w, padding+h);
 		for (var i = 0; i<nChainRings; i++){
 	    	for (var j = 0; j<11; j++){
 	    		var r = ringRatios[i][j];
