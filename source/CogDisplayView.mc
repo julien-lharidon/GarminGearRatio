@@ -161,13 +161,21 @@ class CogDisplayView extends Ui.DataField {
 	    		dc.drawLine(x, padding+i*(h/nChainRings), x, padding+(i+1)*(h/nChainRings));
 	    	}
     	}
+    	
 
 		if(valid){
-			dc.drawText(dc.getWidth()/2d, dc.getHeight()/2, 
-			   Graphics.FONT_MEDIUM, 
-			   measuredRatio.format("%3.1f"), 
-			   Graphics.TEXT_JUSTIFY_CENTER);
+		  dc.setColor(fgColor, Graphics.COLOR_TRANSPARENT);
+		} else {
+		  dc.setColor(Graphics.COLOR_LT_GRAY, Graphics.COLOR_TRANSPARENT);
 		}
+		
+		dc.drawText(dc.getWidth()/2d, dc.getHeight()/2, 
+		   Graphics.FONT_MEDIUM, 
+		   developmentM.format("%3.1f")+" m", 
+		   Graphics.TEXT_JUSTIFY_CENTER);
+		
+		dc.setColor(fgColor, Graphics.COLOR_TRANSPARENT);
+		
 
 
     }
