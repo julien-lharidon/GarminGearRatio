@@ -84,7 +84,7 @@ class CogDisplayView extends Ui.DataField {
 //    	System.println("  spd="+info.currentSpeed * 2.2 + " mph");
     	
 		if (info.currentCadence != null && info.currentSpeed != null 
-			&& info.currentSpeed != 0.0 && info.currentCadence != 0  && info.currentCadence < 500)
+			&& info.currentSpeed != 0.0 && info.currentCadence > 20  && info.currentCadence < 500)
 			{
 				wheelRotSpeed = info.currentSpeed / wheelCircumference;
 				developmentM  = info.currentSpeed / (info.currentCadence/60.0);
@@ -162,7 +162,6 @@ class CogDisplayView extends Ui.DataField {
 	    	}
     	}
     	
-
 		if(valid){
 		  dc.setColor(fgColor, Graphics.COLOR_TRANSPARENT);
 		} else {
