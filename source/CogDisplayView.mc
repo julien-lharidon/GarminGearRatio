@@ -128,11 +128,13 @@ class CogDisplayView extends Ui.DataField {
 		var small = ringRatios[0][0];
 		var large = ringRatios[nChainRings-1][10];
 		var range = large-small;
+		var logbase = 10;
 		
 		// Grey background for each chainring
 		for (var i = 0; i<nChainRings; i++){
-    		var xl = (ringRatios[i][0] - small)/range * w + x1;
-    		var xr = (ringRatios[i][10] - small)/range * w + x1;
+		    var xl = (Math.log(ringRatios[i][0], logbase) - Math.log(small,logbase))/(Math.log(large,logbase)-Math.log(small,logbase)) * w + x1;
+		    var xr = (Math.log(ringRatios[i][10], logbase) - Math.log(small,logbase))/(Math.log(large,logbase)-Math.log(small,logbase)) * w + x1;
+
     		var yt = padding+i*(h/nChainRings);
     		var yb = padding+(i+1)*(h/nChainRings);
     		
@@ -143,7 +145,9 @@ class CogDisplayView extends Ui.DataField {
     	
 		// Red cursor for current ratio    	
     	dc.setColor(Gfx.COLOR_RED, Graphics.COLOR_TRANSPARENT);
-		var x = (measuredRatio - small)/range * w + x1;
+		
+	    var x = (Math.log(measuredRatio, logbase) - Math.log(small,logbase))/(Math.log(large,logbase)-Math.log(small,logbase)) * w + x1;
+		
 		if ( x<padding )  { x = padding;}
 		if ( x>padding+w-1 ){ x = padding+w-1; }
 		dc.setPenWidth(3);
@@ -155,7 +159,9 @@ class CogDisplayView extends Ui.DataField {
 		for (var i = 0; i<nChainRings; i++){
 	    	for (var j = 0; j<11; j++){
 	    		var r = ringRatios[i][j];
-	    		var x = (r - small)/range * w + x1;
+	    		
+	    		var x = (Math.log(r, logbase) - Math.log(small,logbase))/(Math.log(large,logbase)-Math.log(small,logbase)) * w + x1;
+	    			
 	    		if ( x<padding )  { x = padding; }
 	    		if ( x>padding+w-1 ){ x = padding+w-1; }
 	    		dc.drawLine(x, padding+i*(h/nChainRings), x, padding+(i+1)*(h/nChainRings));
