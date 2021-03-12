@@ -5,21 +5,38 @@ class CogDisplayView extends Ui.DataField {
 
 	// Load user settings (wheel size, number of teeth, etc...)
     var nChainRings = Application.getApp().getProperty("chainRingCount");
-	var wheelCircumference = Application.getApp().getProperty("wheelCircumference")/1000.0;
-	var chainRings = [Application.getApp().getProperty("chainRing1"), 
+  	var chainRings = [Application.getApp().getProperty("chainRing1"), 
 						Application.getApp().getProperty("chainRing2"),
 						Application.getApp().getProperty("chainRing3")];
-	var cogs = [Application.getApp().getProperty("cog1"), 
-						Application.getApp().getProperty("cog2"), 
-						Application.getApp().getProperty("cog3"), 
-						Application.getApp().getProperty("cog4"), 
-						Application.getApp().getProperty("cog5"), 
-						Application.getApp().getProperty("cog6"), 
-						Application.getApp().getProperty("cog7"), 
-						Application.getApp().getProperty("cog8"), 
-						Application.getApp().getProperty("cog9"), 
-						Application.getApp().getProperty("cog10"), 
-						Application.getApp().getProperty("cog11")];
+						  
+	var wheelSet = Application.getApp().getProperty("wheelSelected");
+	
+	var wheelCircumference1 = ((Application.getApp().getProperty("tireWidth1")*2+622)*Math.PI) / 1000;
+	var cogs1 = [Application.getApp().getProperty("cog1_1"), 
+						Application.getApp().getProperty("cog1_2"), 
+						Application.getApp().getProperty("cog1_3"), 
+						Application.getApp().getProperty("cog1_4"), 
+						Application.getApp().getProperty("cog1_5"), 
+						Application.getApp().getProperty("cog1_6"), 
+						Application.getApp().getProperty("cog1_7"), 
+						Application.getApp().getProperty("cog1_8"), 
+						Application.getApp().getProperty("cog1_9"), 
+						Application.getApp().getProperty("cog1_10"), 
+						Application.getApp().getProperty("cog1_11")];
+						
+	var wheelCircumference2 = ((Application.getApp().getProperty("tireWidth2")*2+622)*Math.PI) / 1000;
+	var cogs2 = [Application.getApp().getProperty("cog2_1"), 
+						Application.getApp().getProperty("cog2_2"), 
+						Application.getApp().getProperty("cog2_3"), 
+						Application.getApp().getProperty("cog2_4"), 
+						Application.getApp().getProperty("cog2_5"), 
+						Application.getApp().getProperty("cog2_6"), 
+						Application.getApp().getProperty("cog2_7"), 
+						Application.getApp().getProperty("cog2_8"), 
+						Application.getApp().getProperty("cog2_9"), 
+						Application.getApp().getProperty("cog2_10"), 
+						Application.getApp().getProperty("cog2_11")];
+
 	
 	var ringRatios = new [nChainRings];	
 						
@@ -32,9 +49,19 @@ class CogDisplayView extends Ui.DataField {
 	
 	hidden var ratioField = null;
 	hidden var developmentField = null;
-	
+
+	var cogs;
+	var wheelCircumference;	
 
     function initialize() {
+    	if(wheelSet==1){
+	    	cogs = cogs1;
+	    	wheelCircumference = wheelCircumference1;
+    	}else{
+    		cogs = cogs2;
+	    	wheelCircumference = wheelCircumference2;
+    	}
+    	
     	// Create an array of [nChainRings, 11]
     	for (var i = 0; i<nChainRings; i++){
     		ringRatios[i] = new [11];
