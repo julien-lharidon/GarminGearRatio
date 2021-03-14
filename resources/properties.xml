@@ -40,8 +40,7 @@
 		<string id="triple">Triple</string>
 		<string id="chainRing1">Chain Ring 1 (smallest)</string>
 		<string id="chainRing2">Chain Ring 2 (put 0 for single chain ring)</string>
-		<string id="chainRing3">Chain Ring 3 (put 0 for single and double chain
-			ring)
+		<string id="chainRing3">Chain Ring 3 (put 0 for single and double chain ring)
 		</string>
 		<string id="wheelSelected">Select Wheelset</string>
 		<string id="wheelSet1">Wheelset 1</string>
@@ -135,16 +134,50 @@
 		<setting propertyKey="@Properties.cog1_9" title="@Strings.cog1_9">
 			<settingConfig type="numeric" />
 		</setting>
-		<setting propertyKey="@Properties.cog1_10"
-			title="@Strings.cog1_10">
+		<setting propertyKey="@Properties.cog1_10" title="@Strings.cog1_10">
 			<settingConfig type="numeric" />
 		</setting>
-		<setting propertyKey="@Properties.cog1_11"
-			title="@Strings.cog1_11">
+		<setting propertyKey="@Properties.cog1_11" title="@Strings.cog1_11">
 			<settingConfig type="numeric" />
 		</setting>
-		<setting propertyKey="@Properties.tireWidth1"
-			title="@Strings.tireWidth1">
+		<setting propertyKey="@Properties.tireWidth1" title="@Strings.tireWidth1">
+			<settingConfig type="numeric" />
+		</setting>
+		
+		<setting propertyKey="@Properties.cog2_1" title="@Strings.cog2_1">
+			<settingConfig type="numeric" />
+		</setting>
+		<setting propertyKey="@Properties.cog2_2" title="@Strings.cog2_2">
+			<settingConfig type="numeric" />
+		</setting>
+		<setting propertyKey="@Properties.cog2_3" title="@Strings.cog2_3">
+			<settingConfig type="numeric" />
+		</setting>
+		<setting propertyKey="@Properties.cog2_4" title="@Strings.cog2_4">
+			<settingConfig type="numeric" />
+		</setting>
+		<setting propertyKey="@Properties.cog2_5" title="@Strings.cog2_5">
+			<settingConfig type="numeric" />
+		</setting>
+		<setting propertyKey="@Properties.cog2_6" title="@Strings.cog2_6">
+			<settingConfig type="numeric" />
+		</setting>
+		<setting propertyKey="@Properties.cog2_7" title="@Strings.cog2_7">
+			<settingConfig type="numeric" />
+		</setting>
+		<setting propertyKey="@Properties.cog2_8" title="@Strings.cog2_8">
+			<settingConfig type="numeric" />
+		</setting>
+		<setting propertyKey="@Properties.cog2_9" title="@Strings.cog2_9">
+			<settingConfig type="numeric" />
+		</setting>
+		<setting propertyKey="@Properties.cog2_10" title="@Strings.cog2_10">
+			<settingConfig type="numeric" />
+		</setting>
+		<setting propertyKey="@Properties.cog2_11" title="@Strings.cog2_11">
+			<settingConfig type="numeric" />
+		</setting>
+		<setting propertyKey="@Properties.tireWidth2" title="@Strings.tireWidth2">
 			<settingConfig type="numeric" />
 		</setting>
 
